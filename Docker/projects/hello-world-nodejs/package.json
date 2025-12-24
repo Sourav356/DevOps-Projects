@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "repository": {
-    "type": "git", 
-    "url": "https://github.com/Sourav356/DevOps-Projects/tree/main/Docker/projects/hello-world-nodejs"
+    "type": "git",
+    "url": "https://github.com/Sourav356/DevOps-Projects.git"
   }
 }

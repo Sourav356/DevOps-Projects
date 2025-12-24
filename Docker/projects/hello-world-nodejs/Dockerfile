@@ -1,20 +1,23 @@
 FROM node:18-alpine   
-# use a modern LTS
+
+# modern LTS
 
 WORKDIR /app
 
 # Copy only dependency files first for better caching
-
 COPY package*.json ./
 
-RUN npm ci --only=production
+# Use npm install instead of npm ci (since no lockfile)
+RUN npm install --omit=dev
 
 # Copy rest of the source code
 COPY . .
 
 EXPOSE 5000
 
-CMD ["node", "start"]
+# Use npm start (calls the "start" script in package.json)
+CMD ["npm", "start"]
 
-#ENTRYPOINT ["node", "start"]
+
+#ENTRYPOINT ["npm", "start"]
 #COPY package.json /app
