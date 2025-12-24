@@ -1,0 +1,22 @@
+{
+  "name": "nodejs-hello-world",
+  "version": "1.0.0",
+  "description": "nodejs-hello-world",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sourav",
+  "dependencies": {
+    "express": "^4.18.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.5"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git", 
+    "url": "https://github.com/Sourav356/DevOps-Projects/tree/main/Docker/projects/hello-world-nodejs"
+  }
+}

@@ -1,0 +1,29 @@
+# Ensure consistent line endings
+* text=auto
+
+# Scripts and configs (always LF, good for Linux servers)
+*.sh text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.tf text eol=lf
+*.py text eol=lf
+*.sql text eol=lf
+*.md text eol=lf
+Dockerfile text eol=lf
+
+# Windows batch files (CRLF)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Mark binaries so Git doesn’t try to change line endings
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.exe binary
+*.dll binary
