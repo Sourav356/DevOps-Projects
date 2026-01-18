@@ -25,8 +25,13 @@ SECRET_KEY = 'django-insecure-ja9apuv6$_=sqirg+1rzd9i_n0!a$2d)@g*%$rcfa=43&-_xl+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+# ✅ Explicitly allow your OpenShift route + localhost 
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1"]
 
+# ✅ Add CSRF trusted origins (must include scheme) 
+CSRF_TRUSTED_ORIGINS = [ 
+    "https://django-route-souravdev-dev.apps.rm1.0a51.p1.openshiftapps.com" 
+]
 
 # Application definition
 
