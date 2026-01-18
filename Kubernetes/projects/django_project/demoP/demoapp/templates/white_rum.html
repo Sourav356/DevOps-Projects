@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>White Rum List</title>
+</head>
+<body>
+    <h1>White Rum List</h1>
+    <ul>
+    {% for whRum in white_rums %}
+        <li>{{ whRum.white_rum_name }} - ${{ whRum.price }} <button type="submit">Order</button><br><br></li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

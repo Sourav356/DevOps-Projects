@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation</title>
+    <style>
+        .container{
+            width:100%;
+            height400px;
+            display: flex;
+            align-item: center;
+            justify-content: center;
+
+        }
+        form{
+            background-color: lightgreen;
+            width: 520px;
+            height:530px;
+            font-size: 26px;
+            padding-left: 20px;
+            border-radius: 5px;
+        }
+        button{
+            padding: 10px 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 20px;
+            background-color: pink;
+            cursor: pointer;
+            border-radius: 10px;
+
+        } 
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form action="" method="POST", style="background-color: #ee9972;">
+            {% csrf_token %}
+            {{ reserve.as_p }}
+            <button type="submit">BOOK</button>
+        </form>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wine List</title>
+</head>
+<body>
+    <h1>Wine List</h1>
+    <ul>
+    {% for wine in wines %}
+        <li>{{ wine.wine_name }} - ${{ wine.price }} <button type="submit">Order</button><br><br></li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

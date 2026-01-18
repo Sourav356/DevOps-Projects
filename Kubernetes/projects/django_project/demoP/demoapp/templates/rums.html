@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Beer List</title>
+</head>
+<body>
+    <h1>Rum List</h1>
+    <ul>
+    {% for rum in rums %}
+        <li>{{ rum.rum_name }} - ${{ rum.price }} <button type="submit">Order</button></li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

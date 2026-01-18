@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vodka List</title>
+</head>
+<body>
+    <h1>Vodka List</h1>
+    <ul>
+    {% for vodka in vodkas %}
+        <li>{{ vodka.vodka_name }} - ${{ vodka.price }} <button type="submit">Order</button><br><br></li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

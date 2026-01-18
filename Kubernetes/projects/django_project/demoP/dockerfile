@@ -1,0 +1,48 @@
+# Stage 1: Builder (compile wheels)
+FROM python:3.12-slim AS builder
+
+WORKDIR /wheels
+
+# System deps needed to build wheels (mysqlclient)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libmariadb-dev \
+    libmariadb-dev-compat \
+    pkg-config \
+ && rm -rf /var/lib/apt/lists/*
+
+# Only copy requirements to maximize layer caching
+COPY requirements.txt .
+
+# Build wheels for all deps
+RUN pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
+
+# Stage 2: Runtime (slim, no build tools)
+FROM python:3.12-slim AS runtime
+
+WORKDIR /app
+
+# Install runtime libs needed by mysqlclient at runtime
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libmariadb-dev \
+    libmariadb-dev-compat \
+ && rm -rf /var/lib/apt/lists/*
+
+# Copy wheels from builder and install
+COPY --from=builder /wheels /wheels
+COPY requirements.txt .
+RUN pip install --no-cache-dir --no-index --find-links=/wheels -r requirements.txt \
+ && rm -rf /wheels
+
+# Copy your Django project
+COPY . .
+
+# OpenShift-friendly permissions
+RUN chgrp -R 0 /app && chmod -R g=u /app \
+ && mkdir -p /home/.cache && chgrp -R 0 /home && chmod -R g=u /home
+
+EXPOSE 8001
+
+# Gunicorn command (Django project = demoP)
+# Workers configurable via env var (default 4)
+CMD ["gunicorn", "demoP.wsgi:application", "--bind", "0.0.0.0:8001", "--workers", "4"]
