@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: aws-load-balancer-webhook-cert
+  namespace: kube-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: create-cert
+        image: public.ecr.aws/eks-distro/kubernetes-sigs/kustomize/kustomize:v4.5.7
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -e
+          apk add openssl
+          openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+            -keyout /tmp/key.pem -out /tmp/cert.pem \
+            -subj "/CN=aws-load-balancer-webhook"
+          kubectl create secret tls aws-load-balancer-webhook-tls \
+            --cert=/tmp/cert.pem --key=/tmp/key.pem -n kube-system
+        volumeMounts:
+        - name: kubeconfig
+          mountPath: /root/.kube
+      restartPolicy: OnFailure
+      serviceAccountName: aws-load-balancer-controller
+      volumes:
+      - name: kubeconfig
+        projected:
+          sources:
+          - secret:
+              name: aws-load-balancer-controller

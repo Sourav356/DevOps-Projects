@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      # securityContext:
+      #   runAsNonRoot: true
+      containers:
+        - name: django
+          image: 637043415174.dkr.ecr.ap-south-2.amazonaws.com/little-lemon-django-app:latest
+          ports:
+            - containerPort: 8001
+          env:
+            # Secrets
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: DB_PASSWORD
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: django-secret
+                  key: DJANGO_SECRET_KEY
+
+            # ConfigMap variables
+            - name: DJANGO_ALLOWED_HOSTS
+              valueFrom:
+                configMapKeyRef:
+                  name: django-config
+                  key: DJANGO_ALLOWED_HOSTS
+            - name: DJANGO_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: django-config
+                  key: DJANGO_DEBUG
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: django-config
+                  key: MYSQL_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: django-config
+                  key: MYSQL_PORT
+            - name: DATABASE_ENGINE
+              valueFrom:
+                configMapKeyRef:
+                  name: django-config
+                  key: DATABASE_ENGINE
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8001
+            initialDelaySeconds: 15
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8001
+            initialDelaySeconds: 30
+            periodSeconds: 10
